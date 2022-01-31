@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+git_source(:github) {|oyster_cards| "https://github.com/#{oyster_cards}" }
+
+ruby '2.7.1'
+
+group :development, :test do 
+    gem "rspec"
+end
+
+# gem "rails"
