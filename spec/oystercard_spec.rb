@@ -1,3 +1,12 @@
-describe Oystercard do
+require "Oystercard"
 
+describe Oystercard do
+it {is_expected.to respond_to :balance}
+
+  describe "#balance" do
+    it "should check a card has a balance" do
+      card = Oystercard.new
+      expect(balance.card).to eq 0 
+    end
+  end
 end
