@@ -32,9 +32,15 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     it 'allow the user to touch in' do
       expect(subject).to respond_to(:touch_in)
     end
-    it 'changes the journey status of the card' do 
+
+    it 'changes the journey status of the card' do
+      subject.top_up(5)
       subject.touch_in
       expect(subject.journey).to eq (true)
+    end
+
+    it 'should prevent touch in if balance too low' do
+      expect { subject.touch_in }.to raise_error "Balance low!"
     end
   end
 
