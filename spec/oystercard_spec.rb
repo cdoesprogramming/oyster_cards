@@ -36,7 +36,7 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     it 'changes the journey status of the card' do
       subject.top_up(5)
       subject.touch_in('station')
-      expect(subject.journey).to eq (true)
+      expect(subject.in_journey?).to eq (true)
     end
 
     it 'should prevent touch in if balance too low' do
@@ -46,7 +46,7 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
 
   describe '#journey' do
     it 'should confirm the user is on a journey' do
-      expect(subject).to respond_to(:journey)
+      expect(subject).to respond_to(:in_journey?)
     end
   end
 
@@ -57,7 +57,7 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
 
     it 'should change the journey status of the card to false' do 
       subject.touch_out
-      expect(subject.journey).to eq false 
+      expect(subject.in_journey?).to eq false 
     end
 
     it 'should charge the user for the journey' do
@@ -67,10 +67,11 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
   end
 
   describe '#entry_station' do
+    let(:station){ double :station }
     it 'should tell us what station the user has entered' do
       subject.top_up(5)
-      subject.touch_in('station')
-      expect(subject.entry_station.last).to eq 'station'
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 end
