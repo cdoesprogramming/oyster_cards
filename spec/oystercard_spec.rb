@@ -32,6 +32,10 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     it 'allow the user to touch in' do
       expect(subject).to respond_to(:touch_in)
     end
+    it 'changes the journey status of the card' do 
+      subject.touch_in
+      expect(subject.journey).to eq (true)
+    end
   end
 
   describe '#journey' do
@@ -39,4 +43,15 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
       expect(subject).to respond_to(:journey)
     end
   end
+
+  describe '#touch_out' do
+    it 'should allow the user to touch out' do
+      expect(subject).to respond_to(:touch_out) 
+    end
+    it 'should change the journey status of the card to false' do 
+      subject.touch_out
+      expect(subject.journey).to eq false 
+    end
+  end
+
 end
