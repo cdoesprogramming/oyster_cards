@@ -22,11 +22,11 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     end
   end
 
-  describe "#deduct" do
-    it 'should deduct money from oystercard' do
-      expect{ subject.deduct(1)}.to change{ subject.balance }.by -1
-    end
-  end
+  # describe "#deduct" do
+  #   it 'should deduct money from oystercard' do
+  #     expect{ subject.deduct(1)}.to change{ subject.balance }.by -1
+  #   end
+  # end
  
   describe '#touch_in' do
     it 'allow the user to touch in' do
@@ -61,13 +61,16 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     end
 
     it 'should charge the user for the journey' do
-      # oc = Oystercard.new
-      # oc.top_up(5)
-      # oc.touch_in
-      expect{subject.touch_out}.to change{subject.balance}.by(-1)
+      expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_BALANCE)
     end
-
 
   end
 
+  describe '#entry_station' do
+    it 'should tell us what station the user has entered' do
+      subject.top_up(5)
+      expect(subject.touch_in(station)).to eq (subject.entry_station)
+      #expect(subject.entry_station).to eq entry_station
+    end
+  end
 end
