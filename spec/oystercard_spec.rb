@@ -27,5 +27,16 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
       expect{ subject.deduct(1)}.to change{ subject.balance }.by -1
     end
   end
+ 
+  describe '#touch_in' do
+    it 'allow the user to touch in' do
+      expect(subject).to respond_to(:touch_in)
+    end
+  end
 
+  describe '#journey' do
+    it 'should confirm the user is on a journey' do
+      expect(subject).to respond_to(:journey)
+    end
+  end
 end
