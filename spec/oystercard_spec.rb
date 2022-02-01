@@ -54,10 +54,20 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     it 'should allow the user to touch out' do
       expect(subject).to respond_to(:touch_out) 
     end
+
     it 'should change the journey status of the card to false' do 
       subject.touch_out
       expect(subject.journey).to eq false 
     end
+
+    it 'should charge the user for the journey' do
+      # oc = Oystercard.new
+      # oc.top_up(5)
+      # oc.touch_in
+      expect{subject.touch_out}.to change{subject.balance}.by(-1)
+    end
+
+
   end
 
 end
