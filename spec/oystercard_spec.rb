@@ -42,6 +42,14 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     it 'should prevent touch in if balance too low' do
       expect { subject.touch_in('station') }.to raise_error "Balance low!"
     end
+
+    let(:station){ double :station }
+    it 'should tell us what station the user has entered' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    expect(subject.entry_station).to eq station
+  end
+
   end
 
   describe '#journey' do
@@ -49,6 +57,9 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
       expect(subject).to respond_to(:in_journey?)
     end
   end
+  
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
 
   describe '#touch_out' do
     it 'should allow the user to touch out' do
@@ -56,22 +67,31 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
     end
 
     it 'should change the journey status of the card to false' do 
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect(subject.in_journey?).to eq false 
     end
 
     it 'should charge the user for the journey' do
-      expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_BALANCE)
-    end
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(-Oystercard::MINIMUM_BALANCE)
+    end 
 
+      it 'stores an exit station' do 
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq exit_station
+    end
+  end
+    
+  it 'has an empty list of journeys' do
+    expect(subject.journeys).to be_empty   
   end
 
-  describe '#entry_station' do
-    let(:station){ double :station }
-    it 'should tell us what station the user has entered' do
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station }}
+  describe '#journeys' do
+    it 'stores a journey' do
       subject.top_up(5)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys).to include journey 
     end
   end
 end
